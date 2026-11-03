@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SpotifyNet.Clients.Abstractions;
+using SpotifyNet.Datastructures.Spotify.Authorization;
 
 namespace SpotifyNet.Services.Abstractions;
 
@@ -16,6 +18,9 @@ public interface IAuthorizationRepository
     /// <returns>
     /// The URI to open in a browser, asking the user to authorize <paramref name="scopes"/>.
     /// </returns>
+    /// <exception cref="ArgumentException">
+    /// A scope isn't one of <see cref="AuthorizationScope.ValidScopes"/>.
+    /// </exception>
     Task<string> GetUserAuthorizeUri(
         IEnumerable<string> scopes,
         CancellationToken cancellationToken = default

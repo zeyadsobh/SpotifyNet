@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SpotifyNet.Clients.Abstractions;
+using SpotifyNet.Datastructures.Spotify.Authorization;
 
 namespace SpotifyNet.Services.Abstractions;
 
@@ -13,6 +15,12 @@ public interface ITokenAcquirerService
     /// granted earlier are asked for again, so they're kept; <paramref name="forceGenerate"/>
     /// signs in afresh with just <paramref name="scopes"/>.
     /// </summary>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="scopes"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// A scope isn't one of <see cref="AuthorizationScope.ValidScopes"/>.
+    /// </exception>
     /// <exception cref="AuthorizationException">
     /// The user denied access, or the redirect back was invalid.
     /// </exception>
