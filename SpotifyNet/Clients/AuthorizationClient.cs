@@ -15,6 +15,14 @@ using SpotifyNet.Datastructures.Spotify.Authorization;
 
 namespace SpotifyNet.Clients;
 
+/// <summary>
+/// The <see cref="IAuthorizationClient"/> for Spotify's accounts service, set up by
+/// <see cref="AuthorizationClientOptions"/>.
+/// </summary>
+/// <remarks>
+/// Creating it throws <see cref="ArgumentException"/> if the options have no client ID, or a
+/// redirect URI that isn't an absolute URI.
+/// </remarks>
 public sealed class AuthorizationClient(
     IOptions<AuthorizationClientOptions> options,
     HttpClient httpClient
@@ -25,6 +33,7 @@ public sealed class AuthorizationClient(
 
     private readonly AuthorizationClientOptions _options = Validate(options.Value);
 
+    /// <inheritdoc />
     public UserAuthorization GetUserAuthorization(IEnumerable<string> scopes)
     {
         ArgumentNullException.ThrowIfNull(scopes);
@@ -68,6 +77,7 @@ public sealed class AuthorizationClient(
         };
     }
 
+    /// <inheritdoc />
     public Task<AccessToken> GetUserAccessToken(
         string code,
         string codeVerifier,
@@ -86,6 +96,7 @@ public sealed class AuthorizationClient(
         return PostForAccessToken(payload, cancellationToken);
     }
 
+    /// <inheritdoc />
     public Task<AccessToken> RefreshUserAccessToken(
         string refreshToken,
         CancellationToken cancellationToken

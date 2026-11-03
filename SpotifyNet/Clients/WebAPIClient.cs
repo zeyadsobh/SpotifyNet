@@ -12,6 +12,11 @@ using SpotifyNet.Datastructures.Spotify;
 
 namespace SpotifyNet.Clients;
 
+/// <summary>
+/// The <see cref="IWebAPIClient"/> over an <see cref="HttpClient"/>. Null members are left out of
+/// JSON bodies, and a rate-limited request (429) is retried after its <c>Retry-After</c> delay, up
+/// to 3 times, if that delay is 60 seconds or less.
+/// </summary>
 public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
 {
     private const int MaxRetries = 3;
@@ -24,12 +29,14 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
+    /// <inheritdoc />
     public Task<TResponse> GetAsync<TResponse>(
         string uri,
         AccessTokenProvider accessToken,
         CancellationToken cancellationToken
     ) => SendAsync<TResponse>(HttpMethod.Get, uri, null, accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public async Task<TResponse?> GetOrDefaultAsync<TResponse>(
         string uri,
         AccessTokenProvider accessToken,
@@ -50,12 +57,14 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
             : await ReadAsync<TResponse>(uri, response, cancellationToken);
     }
 
+    /// <inheritdoc />
     public Task PutAsync(
         string uri,
         AccessTokenProvider accessToken,
         CancellationToken cancellationToken
     ) => SendAsync(HttpMethod.Put, uri, null, accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task PutAsync<TBody>(
         string uri,
         TBody body,
@@ -63,6 +72,7 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
         CancellationToken cancellationToken
     ) => SendAsync(HttpMethod.Put, uri, Json(body), accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task<TResponse> PutAsync<TBody, TResponse>(
         string uri,
         TBody body,
@@ -70,6 +80,7 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
         CancellationToken cancellationToken
     ) => SendAsync<TResponse>(HttpMethod.Put, uri, Json(body), accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task PutAsync(
         string uri,
         string body,
@@ -85,12 +96,14 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
             cancellationToken
         );
 
+    /// <inheritdoc />
     public Task PostAsync(
         string uri,
         AccessTokenProvider accessToken,
         CancellationToken cancellationToken
     ) => SendAsync(HttpMethod.Post, uri, null, accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task<TResponse> PostAsync<TBody, TResponse>(
         string uri,
         TBody body,
@@ -98,12 +111,14 @@ public sealed class WebAPIClient(HttpClient httpClient) : IWebAPIClient
         CancellationToken cancellationToken
     ) => SendAsync<TResponse>(HttpMethod.Post, uri, Json(body), accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task DeleteAsync(
         string uri,
         AccessTokenProvider accessToken,
         CancellationToken cancellationToken
     ) => SendAsync(HttpMethod.Delete, uri, null, accessToken, cancellationToken);
 
+    /// <inheritdoc />
     public Task<TResponse> DeleteAsync<TBody, TResponse>(
         string uri,
         TBody body,
