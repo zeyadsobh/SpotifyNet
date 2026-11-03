@@ -7,9 +7,14 @@ using SpotifyNet.Services.Abstractions;
 
 namespace SpotifyNet.Services;
 
+/// <summary>
+/// The <see cref="IAuthorizationService"/> that serves the access token an
+/// <see cref="IAuthorizationRepository"/> holds.
+/// </summary>
 public sealed class AuthorizationService(IAuthorizationRepository authorizationRepository)
     : IAuthorizationService
 {
+    /// <inheritdoc />
     public async Task<string> GetAccessToken(
         IEnumerable<string> scopes,
         CancellationToken cancellationToken

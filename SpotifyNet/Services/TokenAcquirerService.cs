@@ -13,6 +13,15 @@ using SpotifyNet.Services.Abstractions;
 
 namespace SpotifyNet.Services;
 
+/// <summary>
+/// The <see cref="ITokenAcquirerService"/> that opens the authorize URI in the browser, and listens
+/// on the redirect URI with an <see cref="HttpListener"/> for the user's answer. One sign-in runs
+/// at a time.
+/// </summary>
+/// <remarks>
+/// Creating it throws <see cref="ArgumentException"/> unless the redirect URI is an http(s) URI
+/// without a query or fragment.
+/// </remarks>
 public sealed class TokenAcquirerService(
     IAuthorizationRepository authorizationRepository,
     string redirectUri
@@ -23,6 +32,7 @@ public sealed class TokenAcquirerService(
     // Sign-ins share the redirect URI and the pending authorization, so run one at a time.
     private readonly SemaphoreSlim _signInLock = new(1, 1);
 
+    /// <inheritdoc />
     public async Task EnsureTokenExists(
         IEnumerable<string> scopes,
         bool forceGenerate,

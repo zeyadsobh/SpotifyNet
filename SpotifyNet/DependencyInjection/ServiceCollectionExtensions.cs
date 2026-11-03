@@ -13,6 +13,7 @@ using SpotifyNet.Services.WebAPI;
 
 namespace SpotifyNet.DependencyInjection;
 
+/// <summary>Extensions that register SpotifyNet on an <see cref="IServiceCollection"/>.</summary>
 public static class ServiceCollectionExtensions
 {
     private const string HttpClientName = "SpotifyNet";

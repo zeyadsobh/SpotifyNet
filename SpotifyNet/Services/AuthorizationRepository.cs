@@ -12,6 +12,14 @@ using SpotifyNet.Services.Abstractions;
 
 namespace SpotifyNet.Services;
 
+/// <summary>
+/// The <see cref="IAuthorizationRepository"/> that keeps the access token, and the sign-in under
+/// way, as JSON files, refreshing the token when it's expiring. On Unix only the owner can read
+/// the files.
+/// </summary>
+/// <param name="authorizationClient">
+/// Exchanges authorization codes and refresh tokens for access tokens.
+/// </param>
 /// <param name="directory">Where to keep the token files; the user's local app data by default.</param>
 public sealed class AuthorizationRepository(
     IAuthorizationClient authorizationClient,
@@ -47,6 +55,7 @@ public sealed class AuthorizationRepository(
             "SpotifyNet"
         );
 
+    /// <inheritdoc />
     public async Task<string> GetUserAuthorizeUri(
         IEnumerable<string> scopes,
         CancellationToken cancellationToken
@@ -68,6 +77,7 @@ public sealed class AuthorizationRepository(
         return authorization.AuthorizationUri;
     }
 
+    /// <inheritdoc />
     public async Task<AccessTokenMetadata> GetNewAccessToken(
         string code,
         string state,
@@ -108,6 +118,7 @@ public sealed class AuthorizationRepository(
         }
     }
 
+    /// <inheritdoc />
     public async Task<AccessTokenMetadata> GetAccessToken(CancellationToken cancellationToken)
     {
         await _tokenLock.WaitAsync(cancellationToken);
@@ -144,6 +155,7 @@ public sealed class AuthorizationRepository(
         }
     }
 
+    /// <inheritdoc />
     public async Task<AccessTokenMetadata?> GetStoredAccessToken(
         CancellationToken cancellationToken
     )

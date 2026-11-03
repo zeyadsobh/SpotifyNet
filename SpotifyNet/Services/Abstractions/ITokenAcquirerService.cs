@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using SpotifyNet.Clients.Abstractions;
 
 namespace SpotifyNet.Services.Abstractions;
 
+/// <summary>Signs the user in through the browser, so there's an access token to use.</summary>
 public interface ITokenAcquirerService
 {
     /// <summary>
@@ -11,6 +13,12 @@ public interface ITokenAcquirerService
     /// granted earlier are asked for again, so they're kept; <paramref name="forceGenerate"/>
     /// signs in afresh with just <paramref name="scopes"/>.
     /// </summary>
+    /// <exception cref="AuthorizationException">
+    /// The user denied access, or the redirect back was invalid.
+    /// </exception>
+    /// <exception cref="WebAPIException">
+    /// Spotify refused to exchange the authorization code.
+    /// </exception>
     Task EnsureTokenExists(
         IEnumerable<string> scopes,
         bool forceGenerate = false,
