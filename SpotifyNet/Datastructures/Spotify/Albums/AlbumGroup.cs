@@ -7,8 +7,15 @@ namespace SpotifyNet.Datastructures.Spotify.Albums;
 [JsonConverter(typeof(StrictEnumConverter<AlbumGroup>))]
 public enum AlbumGroup
 {
+    /// <summary>An album by the artist.</summary>
     album,
+
+    /// <summary>A single by the artist.</summary>
     single,
+
+    /// <summary>An album the artist appears on.</summary>
     appears_on,
+
+    /// <summary>A compilation featuring the artist.</summary>
     compilation,
 }
