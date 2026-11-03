@@ -75,7 +75,7 @@ public sealed record Chapter
     [JsonPropertyName("resume_point")]
     public ResumePoint? ResumePoint { get; init; }
 
-    /// <summary>The object type: <see cref="ItemType.episode"/>.</summary>
+    /// <summary>The object type: <see cref="ItemType.chapter"/>.</summary>
     [JsonPropertyName("type")]
     public required ItemType Type { get; init; }
 
